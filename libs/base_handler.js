@@ -33,7 +33,7 @@ BaseHandler.prototype.handle=function(request,response)
   {
     urlObject=url.parse(target);
   });
-  request.url=urlObject.path
+  request.url= urlObject.path + request.url;
   this.proxy.on('proxyReq', function(proxyReq, req, res, options)
   {
     proxyReq.setHeader("Host",urlObject.host);
