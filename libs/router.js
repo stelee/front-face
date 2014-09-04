@@ -14,7 +14,6 @@ Router.prototype.route=function(request)
   var ret;
   injector.process("route_table","config",function(t,config)
   {
-    debugger;
     var hostNode=t[host] || t["_"];
     for(var prop in hostNode)
     {
@@ -30,8 +29,8 @@ Router.prototype.route=function(request)
       }
     }
     ret=hostNode["_"];
+    request.url=request.url.replace("/","");
   })
-  debugger;
   return ret;
 }
 
