@@ -18,25 +18,25 @@ exports.config={
         , 'admin'
       ]
     },
-    'twister' : {
-      username : 'twister'
-      ,password: 'changeyourpassword'
+    'test' : {
+      username : 'test'
+      ,password: 'test'
       ,groups : [
         'user'
-        ,'twister'
+        ,'test'
       ]
     }
   },
   route_table:
   {
     "localhost" : {
-      "/ifanr/" : "@secure http://www.ifanr.com",
-      "/leesoft/" : "http://leesoft.ca",
-      "/twister/" : "@secure twister",
+      "/yahoo/" : "http://www.yahoo.com",
+      "/leesoft/" : "@secure http://leesoft.ca",
+      "/sample/" : "@secure(user,test) sample",
       "_" : "http://www.google.com"
     },
     "127.0.0.1" : {
-      "_" : "http://leesoft.ca"
+      "_" : "http://www.google.com"
     },
     "dev.lab.leesoft.ca" :
     {

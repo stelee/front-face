@@ -1,6 +1,10 @@
 var Router=function()
 {
-
+  var that=this;
+  $I("config",function(config)
+  {
+    that.handlers=config.handlers;
+  });
 }
 
 Router.prototype.route=function(request)
@@ -27,13 +31,16 @@ Router.prototype.proxy=function(proxy,request,response,target)
   if(target.indexOf("http://")===0
       || target.indexOf("https://")===0)
   {
-      var ulrObject=url.parse(target);
-      request.headers.host=ulrObject.host;
-      request.url=ulrObject.path;
-      proxy.web(request,response,{target:ulrObject.href});
+      var urlObject=url.parse(target);
+      request.url=urlObject.path;
+      proxy.on('proxyReq', function(proxyReq, req, res, options)
+      {
+        proxyReq.setHeader("Host",urlObject.host);
+      });
+      proxy.web(request,response,{target:urlObject.href});
   }else
   {
-    var handler = require("../"+ config.handlers + "/" + target).instance();
+    var handler = require("../"+ this.handlers + "/" + target).instance();
     handler.proxy=proxy;
     handler.handle(request,response);
   }

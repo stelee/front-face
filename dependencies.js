@@ -8,3 +8,4 @@ injector.register('route_table',require('./config').config.route_table);
 injector.register('logger',require('./libs/logger').logger);
 injector.register('Passport',require('./libs/passport').Passport);
 injector.register('router',require('./libs/router').router);
+injector.register('BaseHandler',require('./libs/base_handler').BaseHandler);
