@@ -14,10 +14,24 @@ Router.prototype.route=function(request)
   var ret;
   injector.process("route_table","config",function(t,config)
   {
+    debugger;
     var hostNode=t[host] || t["_"];
-    var pathNode=hostNode[path] || hostNode["_"];
-    ret=pathNode;
+    for(var prop in hostNode)
+    {
+      if(hostNode.hasOwnProperty(prop))
+      {
+        var pathNode=hostNode[prop]
+        if(path.indexOf(prop)===0)
+        {
+          ret=pathNode;
+          request.url=request.url.replace(prop,"");
+          return;
+        }
+      }
+    }
+    ret=hostNode["_"];
   })
+  debugger;
   return ret;
 }
 
@@ -32,7 +46,7 @@ Router.prototype.proxy=function(proxy,request,response,target)
       || target.indexOf("https://")===0)
   {
       var urlObject=url.parse(target);
-      request.url=urlObject.path;
+      request.url= urlObject.path + request.url;
       proxy.on('proxyReq', function(proxyReq, req, res, options)
       {
         proxyReq.setHeader("Host",urlObject.host);
