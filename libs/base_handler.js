@@ -12,7 +12,7 @@ BaseHandler.prototype.proxyRequest=function(proxyReq, req, res, options)
 }
 BaseHandler.prototype.error=function(error,req,res)
 {
-  that.logger.error(error);
+  this.logger.error(error);
   res.writeHead(500, {
     'Content-Type': 'text/plain'
   });
@@ -24,7 +24,7 @@ BaseHandler.prototype.proxyResponse=function(proxyRes,req,res)
   //Do nothing
 }
 
-BaseHandler.prototype.handle=function(request,response)
+BaseHandler.prototype.handle=function(request,response,buffer)
 {
   var that=this;
   var target=this.getTarget();
@@ -45,6 +45,12 @@ BaseHandler.prototype.handle=function(request,response)
   this.proxy.on('proxyRes', function (proxyRes, req, res) {
     that.proxyResponse.call(that,proxyRes,req,res);
   });
-  this.proxy.web(request,response,{target: target})
+  var option={};
+  option.target=target;
+  if(!!buffer)
+  {
+    option.buffer=buffer;
+  }
+  this.proxy.web(request,response,option)
 }
 exports.BaseHandler=BaseHandler;
